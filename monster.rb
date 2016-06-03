@@ -3,6 +3,7 @@ class Monster < Entity
 		@x = x
 		@y = y
 		@speed = 0.2
+		@life = 3
 	end
 
 	def char
@@ -14,20 +15,28 @@ class Monster < Entity
 	end
 
 	def color
-		Curses::COLOR_RED
+		[Curses::COLOR_RED, Curses::COLOR_YELLOW, Curses::COLOR_GREEN][@life-1]
+	end
+
+	def take_damage(damage)
+		@life -= damage
+	end
+	
+	def life
+		@life
 	end
 
 	def move_towards(target)
 		if target.x > @x
-			@x = @x + 1
+			return @x = @x + 1
 		elsif target.x < @x
-			@x = @x - 1
+			return @x = @x - 1
 		end
 
 		if target.y > @y
-			@y = @y + 1
+			return @y = @y + 1
 		elsif target.y < @y
-			@y = @y - 1
+			return @y = @y - 1
 		end
 	end
 end

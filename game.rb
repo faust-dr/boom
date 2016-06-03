@@ -7,16 +7,26 @@ class Game
 		@player = Player.new(width/2, height/2)
 		@bullets = []
 		@level = 1
-		@monsters = spawn_monsters
 		@frame = 1
+
+		spawn_monsters
 	end
 
 	def spawn_monsters
-		(1..@level).map { create_monster }
+		@monsters = (1..@level).map { create_monster }
 	end
 
 	def create_monster
-		Monster.new(Random.rand(@width).floor, Random.rand(@height).floor)
+		x = Random.rand(@width).floor
+		y = Random.rand(@height).floor
+
+		while (x - @player.x).abs < 10 do
+			x = Random.rand(@width).floor
+		end
+		while (y - @player.y).abs < 10 do
+			y = Random.rand(@height).floor
+		end
+		Monster.new(x, y)
 	end
 
 	def objects
@@ -61,7 +71,7 @@ class Game
 	end
 
 	def textbox_content
-		"Level: #{@level} | Frame: #{@frame}"
+		"Level: #{@level}"
 	end
 
 	def wait?
@@ -134,9 +144,13 @@ class Game
 	end
 
 	def check_monster_hits
-		@bullets.reject! do |bullet|
-			@monsters.any? do |monster|
-				monster.x == bullet.x && monster.y == bullet.y && @monsters -= [monster]
+		@bullets.each do |bullet|
+			@monsters.each do |monster|
+				if monster.x == bullet.x && monster.y == bullet.y
+					monster.take_damage(1)
+					@monsters.delete(monster) if monster.life <= 0
+					@bullets.delete(bullet)
+				end
 			end
 		end
 	end
@@ -150,7 +164,7 @@ class Game
 	def increase_level?
 		if @monsters.length == 0
 			@level += 1
-			@monsters = spawn_monsters
+			spawn_monsters
 		end
 	end
 end
