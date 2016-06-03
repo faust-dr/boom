@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    curses (1.0.2)
+    gaminator (0.0.6)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  curses
+  gaminator
+
+BUNDLED WITH
+   1.11.2
