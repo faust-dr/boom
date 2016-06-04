@@ -16,10 +16,12 @@ class Game
 	end
 
 	def spawn_monsters
-		@monsters = (1..1.2**@level).map { create_monster(1.1**@level) }
+		@monsters = (1..1.2**@level).map { create_monster(@level) }
 	end
 
-	def create_monster(life)
+	def create_monster(level)
+		type = MONSTERS.first
+
 		x = Random.rand(@width).floor
 		y = Random.rand(@height).floor
 
@@ -29,7 +31,8 @@ class Game
 		while (y - @player.y).abs < 10 do
 			y = Random.rand(@height).floor
 		end
-		Monster.new(x, y, life)
+
+		type.new(x, y, level)
 	end
 
 	def objects
@@ -79,7 +82,7 @@ class Game
 	end
 
 	def textbox_content
-		"Level: #{@level} | Monsters killed: #{@kill_counter} | Monster life: #{@monsters.first&.initial_life.round} | Weapon: #{@player.weapon.to_s}"
+		"Level: #{@level} | Monsters killed: #{@kill_counter} | Weapon: #{@player.weapon.to_s}"
 	end
 
 	def wait?

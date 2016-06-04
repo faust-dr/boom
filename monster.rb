@@ -1,22 +1,16 @@
 class Monster < Entity
-	attr_accessor :speed, :life, :initial_life
+	attr_accessor :life
 
-	def initialize(x, y, life)
+	def initialize(x, y, level)
 		@x = x
 		@y = y
-		@speed = 0.2
-		@life = life
-		@initial_life = life
-	end
-
-	def char
-		'M'
+		@life = initial_life * 1.1**level
 	end
 
 	def color
-		if @life.to_f / @initial_life > 0.8
+		if @life.to_f / initial_life > 0.8
 			Curses::COLOR_GREEN
-		elsif @life.to_f / @initial_life > 0.3
+		elsif @life.to_f / initial_life > 0.3
 			Curses::COLOR_YELLOW
 		else
 			Curses::COLOR_RED
@@ -26,7 +20,21 @@ class Monster < Entity
 	def take_damage(damage)
 		@life -= damage
 	end
+end
 	
+class Grunt < Monster
+	def char
+		'G'
+	end
+
+	def speed
+		0.3
+	end
+
+	def initial_life
+		2.0
+	end
+
 	def move_towards(target)
 		if target.x > @x
 			return @x = @x + 1
@@ -41,3 +49,7 @@ class Monster < Entity
 		end
 	end
 end
+
+MONSTERS = [
+	Grunt
+]
