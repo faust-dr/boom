@@ -11,6 +11,7 @@ class Game
 		@kill_counter = 0
 		@items = []
 		@last_shot_frames = 0
+		@paused = false
 
 		spawn_monsters
 	end
@@ -58,7 +59,12 @@ class Game
 			?e => :shoot_down,
 
 			?q => :exit,
+			' '=> :pause,
 		}
+	end
+
+	def pause
+		@paused = !@paused
 	end
 
 	def tick
@@ -92,6 +98,7 @@ class Game
 	end
 
 	def wait?
+		@paused
 	end
 
 	def sleep_time
