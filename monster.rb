@@ -80,7 +80,36 @@ class Camper < Monster
 	end
 end
 
+class Tank < Monster
+	def char
+		'T'
+	end
+
+	def speed
+		0.5
+	end
+
+	def initial_life
+		9.0
+	end
+
+	def move_towards(target)
+		if target.y > @y
+			return @y = @y + 1
+		elsif target.y < @y
+			return @y = @y - 1
+		end
+
+		if target.x > @x
+			return @x = @x + 1
+		elsif target.x < @x
+			return @x = @x - 1
+		end
+	end
+end
+
 MONSTERS = [
 	Grunt,
-	Camper
+	Camper,
+	Tank
 ]
