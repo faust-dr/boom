@@ -1,9 +1,10 @@
 class Monster < Entity
-	def initialize(x, y)
+	def initialize(x, y, life)
 		@x = x
 		@y = y
 		@speed = 0.2
-		@life = 3
+		@life = life
+		@initial_life = life
 	end
 
 	def char
@@ -15,7 +16,13 @@ class Monster < Entity
 	end
 
 	def color
-		[Curses::COLOR_RED, Curses::COLOR_YELLOW, Curses::COLOR_GREEN][@life-1]
+		if @life.to_f / @initial_life > 0.8
+			Curses::COLOR_GREEN
+		elsif @life.to_f / @initial_life > 0.3
+			Curses::COLOR_YELLOW
+		else
+			Curses::COLOR_RED
+		end
 	end
 
 	def take_damage(damage)
@@ -24,6 +31,10 @@ class Monster < Entity
 	
 	def life
 		@life
+	end
+
+	def initial_life
+		@initial_life
 	end
 
 	def move_towards(target)

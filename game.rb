@@ -8,15 +8,16 @@ class Game
 		@bullets = []
 		@level = 1
 		@frame = 1
+		@kill_counter = 0
 
 		spawn_monsters
 	end
 
 	def spawn_monsters
-		@monsters = (1..@level).map { create_monster }
+		@monsters = (1..1.2**@level).map { create_monster(1.1**@level) }
 	end
 
-	def create_monster
+	def create_monster(life)
 		x = Random.rand(@width).floor
 		y = Random.rand(@height).floor
 
@@ -26,7 +27,7 @@ class Game
 		while (y - @player.y).abs < 10 do
 			y = Random.rand(@height).floor
 		end
-		Monster.new(x, y)
+		Monster.new(x, y, life)
 	end
 
 	def objects
@@ -50,7 +51,7 @@ class Game
 	end
 
 	def tick
-		increase_frame
+		increment_frame
 		move_monsters
 		move_bullets
 		remove_boundary_bullets
@@ -59,7 +60,7 @@ class Game
 		increase_level?
 	end
 
-	def increase_frame
+	def increment_frame
 		@frame += 1
 		if @frame > FPS
 			@frame = 0
@@ -71,7 +72,7 @@ class Game
 	end
 
 	def textbox_content
-		"Level: #{@level}"
+		"Level: #{@level} | Monsters killed: #{@kill_counter} | Monster life: #{@monsters.first&.initial_life.round}"
 	end
 
 	def wait?
@@ -148,7 +149,10 @@ class Game
 			@monsters.each do |monster|
 				if monster.x == bullet.x && monster.y == bullet.y
 					monster.take_damage(1)
-					@monsters.delete(monster) if monster.life <= 0
+					if monster.life <= 0
+						@monsters.delete(monster)
+						@kill_counter += 1
+					end
 					@bullets.delete(bullet)
 				end
 			end
