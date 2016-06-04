@@ -1,6 +1,6 @@
-class Game
-	FPS = 30
+FPS = 30
 
+class Game
 	def initialize(width, height)
 		@width = width
 		@height = height
@@ -54,12 +54,13 @@ class Game
 
 	def tick
 		increment_frame
-		move_monsters
 		move_bullets
-		remove_boundary_bullets
+		move_monsters
 		check_monster_hits
+		remove_boundary_bullets
 		check_player_hits
 		increase_level?
+		decrease_explosion_duration
 	end
 
 	def increment_frame
@@ -146,6 +147,7 @@ class Game
 			bullet.x = bullet.x + bullet.x_dir
 			bullet.y = bullet.y + bullet.y_dir
 		end
+		check_monster_hits
 	end
 
 	def remove_boundary_bullets
@@ -161,7 +163,12 @@ class Game
 		@bullets.each do |bullet|
 			@monsters.each do |monster|
 				if monster.x == bullet.x && monster.y == bullet.y
-					monster.take_damage(@player.weapon.damage)
+					if bullet.class == Explosion
+						monster.take_damage(bullet.damage)
+					else
+						@player.weapon.effect(monster)
+					end
+
 					if monster.life <= 0
 						@monsters.delete(monster)
 						@kill_counter += 1
@@ -193,6 +200,15 @@ class Game
 		if @monsters.length == 0
 			@level += 1
 			spawn_monsters
+		end
+	end
+
+	def decrease_explosion_duration
+		@bullets.select {|b| b.class == Explosion}.each do |explosion|
+			explosion.duration -= 1
+			if explosion.duration == 0
+				@bullets.delete(explosion)
+			end
 		end
 	end
 end

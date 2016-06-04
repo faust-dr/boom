@@ -8,6 +8,10 @@ class Weapon
 			@bullets = array
 			self
 		end
+
+		def effect(monster)
+			monster.take_damage(damage)
+		end
 	end
 end
 
@@ -99,7 +103,39 @@ class ChainGun < Weapon
 		end
 
 		def damage
-			2
+			4
+		end
+	end
+end
+
+class RocketLauncher < Weapon
+	class << self
+		def char
+			'r'
+		end
+
+		def shoot(x, y, x_dir, y_dir)
+			@bullets << Rocket.new(x, y, x_dir, y_dir)
+		end
+
+		def rate
+			1.3
+		end
+
+		def damage
+			20
+		end
+
+		def effect(monster)
+			monster.take_damage(damage)
+			x = monster.x
+			y = monster.y
+
+			(-1..1).each do |i|
+				(-1..1).each do |j|
+					@bullets << Explosion.new(x + i, y + j)
+				end
+			end
 		end
 	end
 end
@@ -108,5 +144,6 @@ WEAPONS = [
 	Pistol,
 	Shotgun,
 	MachineGun,
-	ChainGun
+	ChainGun,
+	RocketLauncher
 ]
