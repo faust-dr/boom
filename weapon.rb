@@ -143,7 +143,7 @@ class ChainGun < Weapon
 		end
 
 		def damage
-			4
+			6
 		end
 	end
 end
