@@ -177,15 +177,30 @@ class Game
 					if monster.life <= 0
 						@monsters.delete(monster)
 						@kill_counter += 1
-						if Random.rand(12).round == 0
-							weapon = WEAPONS[WEAPONS.index(@player.weapon) + 1]
-							@items << Item.new(monster.x, monster.y, weapon) unless weapon.nil?
-						end
+						weapon_drop(monster.x, monster.y)
 					end
 					@bullets.delete(bullet) unless bullet.pierce?
 				end
 			end
 		end
+	end
+
+	def weapon_dropped?
+		!@items.empty?
+	end
+
+	def ready_for_next_weapon?
+		@level/4 > WEAPONS.index(@player.weapon)
+	end
+
+	def next_weapon
+		WEAPONS[WEAPONS.index(@player.weapon) + 1]
+	end
+
+	def weapon_drop(x, y)
+		return if weapon_dropped? || !ready_for_next_weapon? || next_weapon.nil?
+
+		@items << Item.new(x, y, next_weapon)
 	end
 
 	def check_player_hits
