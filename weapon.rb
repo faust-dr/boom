@@ -131,6 +131,8 @@ class RocketLauncher < Weapon
 			x = monster.x
 			y = monster.y
 
+			return if @bullets.nil?
+
 			(-1..1).each do |i|
 				(-1..1).each do |j|
 					@bullets << Explosion.new(x + i, y + j)
