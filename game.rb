@@ -9,6 +9,7 @@ class Game
 		@level = 1
 		@frame = 1
 		@kill_counter = 0
+		@items = []
 
 		spawn_monsters
 	end
@@ -31,7 +32,7 @@ class Game
 	end
 
 	def objects
-		[@player] + @bullets + @monsters
+		[@player] + @bullets + @monsters + @items
 	end
 
 	def input_map
@@ -72,7 +73,7 @@ class Game
 	end
 
 	def textbox_content
-		"Level: #{@level} | Monsters killed: #{@kill_counter} | Monster life: #{@monsters.first&.initial_life.round}"
+		"Level: #{@level} | Monsters killed: #{@kill_counter} | Monster life: #{@monsters.first&.initial_life.round} | Special ammo: #{@player.ammunition}"
 	end
 
 	def wait?
@@ -98,20 +99,31 @@ class Game
 		@player.y = @player.y + 1 unless @player.y == (@height - 1)
 	end
 
+	def shoot(x, y)
+		if @player.ammunition > 0
+			@bullets << Bullet.new(@player.x, @player.y, x, y)
+			@bullets << Bullet.new(@player.x + y, @player.y + x, x, y)
+			@bullets << Bullet.new(@player.x - y, @player.y - x, x, y)
+			@player.ammunition -= 1
+		else
+			@bullets << Bullet.new(@player.x, @player.y, x, y)
+		end
+	end
+
 	def shoot_left
-		@bullets << Bullet.new(@player.x, @player.y, -1, 0)
+		shoot(-1, 0)
 	end
 
 	def shoot_right
-		@bullets << Bullet.new(@player.x, @player.y, 1, 0)
+		shoot(1, 0)
 	end
 
 	def shoot_up
-		@bullets << Bullet.new(@player.x, @player.y, 0, -1)
+		shoot(0, -1)
 	end
 
 	def shoot_down
-		@bullets << Bullet.new(@player.x, @player.y, 0, 1)
+		shoot(0, 1)
 	end
 
 	def exit
@@ -152,6 +164,9 @@ class Game
 					if monster.life <= 0
 						@monsters.delete(monster)
 						@kill_counter += 1
+						if Random.rand(10).round == 0
+							@items << Weapon.new(monster.x, monster.y)
+						end
 					end
 					@bullets.delete(bullet)
 				end
@@ -162,6 +177,13 @@ class Game
 	def check_player_hits
 		if @monsters.any? { |monster| monster.x == @player.x && monster.y == @player.y }
 			exit
+		end
+
+		@items.each do |item|
+			if item.x == @player.x && item.y == @player.y
+				item.effect(@player)
+				@items.delete(item)
+			end
 		end
 	end
 

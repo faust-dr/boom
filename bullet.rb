@@ -1,4 +1,6 @@
 class Bullet < Entity
+	attr_accessor :x_dir, :y_dir
+
 	def initialize(x, y, x_dir, y_dir)
 		@x = x
 		@y = y
@@ -10,14 +12,6 @@ class Bullet < Entity
 		Curses::COLOR_YELLOW
 	end
 	
-	def x_dir
-		@x_dir
-	end
-	
-	def y_dir
-		@y_dir
-	end
-
 	def char
 		'.'
 	end

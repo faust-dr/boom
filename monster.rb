@@ -1,4 +1,6 @@
 class Monster < Entity
+	attr_accessor :speed, :life, :initial_life
+
 	def initialize(x, y, life)
 		@x = x
 		@y = y
@@ -9,10 +11,6 @@ class Monster < Entity
 
 	def char
 		'M'
-	end
-
-	def speed
-		@speed
 	end
 
 	def color
@@ -29,14 +27,6 @@ class Monster < Entity
 		@life -= damage
 	end
 	
-	def life
-		@life
-	end
-
-	def initial_life
-		@initial_life
-	end
-
 	def move_towards(target)
 		if target.x > @x
 			return @x = @x + 1

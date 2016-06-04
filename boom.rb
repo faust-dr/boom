@@ -7,6 +7,7 @@ require './entity.rb'
 require './player.rb'
 require './monster.rb'
 require './bullet.rb'
+require './weapon.rb'
 require './game.rb'
 
 Gaminator::Runner.new(Game, :rows => 30, :cols => 80).run
