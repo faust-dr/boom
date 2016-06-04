@@ -6,7 +6,7 @@ class Game
 		@height = height
 		@player = Player.new(width/2, height/2)
 		@bullets = []
-		@level = 1
+		@level = 20
 		@frame = 1
 		@kill_counter = 0
 		@items = []
@@ -183,7 +183,7 @@ class Game
 							@items << Item.new(monster.x, monster.y, weapon) unless weapon.nil?
 						end
 					end
-					@bullets.delete(bullet)
+					@bullets.delete(bullet) unless bullet.pierce?
 				end
 			end
 		end

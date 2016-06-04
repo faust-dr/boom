@@ -163,11 +163,32 @@ class RocketLauncher < Weapon
 	end
 end
 
+class Laser < Weapon
+	class << self
+		def char
+			'l'
+		end
+
+		def shoot(x, y, x_dir, y_dir)
+			@bullets << Light.new(x, y, x_dir, y_dir)
+		end
+
+		def rate
+			1
+		end
+
+		def damage
+			10
+		end
+	end
+end
+
 WEAPONS = [
 	Pistol,
 	Shotgun,
 	MachineGun,
 	AutoShotgun,
 	ChainGun,
-	RocketLauncher
+	RocketLauncher,
+	Laser
 ]

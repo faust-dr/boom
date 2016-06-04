@@ -15,4 +15,8 @@ class Bullet < Entity
 	def char
 		'.'
 	end
+
+	def pierce?
+		false
+	end
 end
