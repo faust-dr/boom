@@ -4,7 +4,7 @@ class Player < Entity
 	def initialize(x, y)
 		@x = x
 		@y = y
-		@weapon = Pistol
+		@weapon = WEAPONS.first
 	end
 
 	def char

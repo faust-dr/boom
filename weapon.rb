@@ -61,8 +61,6 @@ class MachineGun < Weapon
 
 		def shoot(x, y, x_dir, y_dir)
 			@bullets << Bullet.new(x, y, x_dir, y_dir)
-			# @bullets << Bullet.new(x + x_dir, y + y_dir, x_dir, y_dir)
-			# @bullets << Bullet.new(x - x_dir, y - y_dir, x_dir, y_dir)
 		end
 
 		def rate
@@ -75,4 +73,40 @@ class MachineGun < Weapon
 	end
 end
 
-WEAPONS = [Pistol, Shotgun, MachineGun]
+class ChainGun < Weapon
+	class << self
+		def char
+			'c'
+		end
+
+		def shoot(x, y, x_dir, y_dir)
+			@last = 0 unless @last
+			@last = 0 if @last >= 3
+
+			if @last == 0
+				@bullets << Bullet.new(x, y, x_dir, y_dir)
+			elsif @last == 1
+				@bullets << Bullet.new(x + y_dir, y + x_dir, x_dir, y_dir)
+			else
+				@bullets << Bullet.new(x - y_dir, y - x_dir, x_dir, y_dir)
+			end
+
+			@last += 1
+		end
+
+		def rate
+			0.1
+		end
+
+		def damage
+			2
+		end
+	end
+end
+
+WEAPONS = [
+	Pistol,
+	Shotgun,
+	MachineGun,
+	ChainGun
+]
