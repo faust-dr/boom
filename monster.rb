@@ -86,11 +86,11 @@ class Tank < Monster
 	end
 
 	def speed
-		0.5
+		0.7
 	end
 
 	def initial_life
-		9.0
+		5.0
 	end
 
 	def move_towards(target)
