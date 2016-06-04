@@ -22,7 +22,8 @@ class Game
 	def create_monster(level)
 		range = [(1 + @level / 5).floor, MONSTERS.length].min
 		@range = range
-		type = MONSTERS[Random.rand(range)]
+		# type = MONSTERS[Random.rand(range)]
+		type = MONSTERS.first
 
 		x = Random.rand(@width).floor
 		y = Random.rand(@height).floor
@@ -84,7 +85,7 @@ class Game
 	end
 
 	def textbox_content
-		"Level: #{@level} | Monsters killed: #{@kill_counter} | Weapon: #{@player.weapon.to_s} | Range : #{@range}"
+		"Level: #{@level} | Killed: #{@kill_counter} | Weapon: #{@player.weapon.to_s} | Range : #{@range} | Objects: #{objects.length}"
 	end
 
 	def wait?

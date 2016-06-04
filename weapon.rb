@@ -35,28 +35,6 @@ class Pistol < Weapon
 	end
 end
 
-class Shotgun < Weapon
-	class << self
-		def char
-			's'
-		end
-
-		def shoot(x, y, x_dir, y_dir)
-			@bullets << Bullet.new(x, y, x_dir, y_dir)
-			@bullets << Bullet.new(x + y_dir, y + x_dir, x_dir, y_dir)
-			@bullets << Bullet.new(x - y_dir, y - x_dir, x_dir, y_dir)
-		end
-
-		def rate
-			1
-		end
-
-		def damage
-			3
-		end
-	end
-end
-
 class MachineGun < Weapon
 	class << self
 		def char
@@ -73,6 +51,46 @@ class MachineGun < Weapon
 
 		def damage
 			1
+		end
+	end
+end
+
+class AutoShotgun < Weapon
+	class << self
+		def char
+			'a'
+		end
+
+		def magazine_size
+			5
+		end
+
+		def shoot(x, y, x_dir, y_dir)
+			@shots_left = magazine_size unless @shots_left
+
+			if @shots_left <= 0
+				@shots_left = magazine_size
+			end
+
+			@bullets << Bullet.new(x, y, x_dir, y_dir)
+			@bullets << Bullet.new(x + y_dir, y + x_dir, x_dir, y_dir)
+			@bullets << Bullet.new(x - y_dir, y - x_dir, x_dir, y_dir)
+
+			@shots_left -= 1
+		end
+
+		def rate
+			@shots_left = magazine_size unless @shots_left
+
+			if @shots_left == (magazine_size - 1)
+				1
+			else
+				0.1
+			end
+		end
+
+		def damage
+			4
 		end
 	end
 end
@@ -138,6 +156,9 @@ class RocketLauncher < Weapon
 					@bullets << Explosion.new(x + i, y + j)
 				end
 			end
+
+			@bullets << Explosion.new(x + 2, y)
+			@bullets << Explosion.new(x - 2, y)
 		end
 	end
 end
@@ -146,6 +167,7 @@ WEAPONS = [
 	Pistol,
 	Shotgun,
 	MachineGun,
+	AutoShotgun,
 	ChainGun,
 	RocketLauncher
 ]
