@@ -1,10 +1,10 @@
 class Player < Entity
-	attr_accessor :ammunition
+	attr_accessor :weapon
 
 	def initialize(x, y)
 		@x = x
 		@y = y
-		@ammunition = 0
+		@weapon = Pistol
 	end
 
 	def char

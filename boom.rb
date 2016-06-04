@@ -7,6 +7,7 @@ require './entity.rb'
 require './player.rb'
 require './monster.rb'
 require './bullet.rb'
+require './item.rb'
 require './weapon.rb'
 require './game.rb'
 

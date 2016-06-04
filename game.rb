@@ -10,6 +10,7 @@ class Game
 		@frame = 1
 		@kill_counter = 0
 		@items = []
+		@last_shot_frames = 0
 
 		spawn_monsters
 	end
@@ -66,6 +67,10 @@ class Game
 		if @frame > FPS
 			@frame = 0
 		end
+
+		if @last_shot_frames > 0
+			@last_shot_frames -= 1
+		end
 	end
 
 	def exit_message
@@ -73,7 +78,7 @@ class Game
 	end
 
 	def textbox_content
-		"Level: #{@level} | Monsters killed: #{@kill_counter} | Monster life: #{@monsters.first&.initial_life.round} | Special ammo: #{@player.ammunition}"
+		"Level: #{@level} | Monsters killed: #{@kill_counter} | Monster life: #{@monsters.first&.initial_life.round} | Weapon: #{@player.weapon.to_s}"
 	end
 
 	def wait?
@@ -99,15 +104,11 @@ class Game
 		@player.y = @player.y + 1 unless @player.y == (@height - 1)
 	end
 
-	def shoot(x, y)
-		if @player.ammunition > 0
-			@bullets << Bullet.new(@player.x, @player.y, x, y)
-			@bullets << Bullet.new(@player.x + y, @player.y + x, x, y)
-			@bullets << Bullet.new(@player.x - y, @player.y - x, x, y)
-			@player.ammunition -= 1
-		else
-			@bullets << Bullet.new(@player.x, @player.y, x, y)
-		end
+	def shoot(x_dir, y_dir)
+		return unless @last_shot_frames == 0
+
+		@last_shot_frames = FPS.to_f * @player.weapon.rate
+		@player.weapon.with(@bullets).shoot(@player.x, @player.y, x_dir, y_dir)
 	end
 
 	def shoot_left
@@ -160,12 +161,13 @@ class Game
 		@bullets.each do |bullet|
 			@monsters.each do |monster|
 				if monster.x == bullet.x && monster.y == bullet.y
-					monster.take_damage(1)
+					monster.take_damage(@player.weapon.damage)
 					if monster.life <= 0
 						@monsters.delete(monster)
 						@kill_counter += 1
-						if Random.rand(10).round == 0
-							@items << Weapon.new(monster.x, monster.y)
+						if Random.rand(12).round == 0
+							weapon = WEAPONS[WEAPONS.index(@player.weapon) + 1]
+							@items << Item.new(monster.x, monster.y, weapon) unless weapon.nil?
 						end
 					end
 					@bullets.delete(bullet)
