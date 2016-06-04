@@ -6,7 +6,7 @@ class Game
 		@height = height
 		@player = Player.new(width/2, height/2)
 		@bullets = []
-		@level = 20
+		@level = 1
 		@frame = 1
 		@kill_counter = 0
 		@items = []
@@ -22,8 +22,7 @@ class Game
 	def create_monster(level)
 		range = [(1 + @level / 5).floor, MONSTERS.length].min
 		@range = range
-		# type = MONSTERS[Random.rand(range)]
-		type = MONSTERS.first
+		type = MONSTERS[Random.rand(range)]
 
 		x = Random.rand(@width).floor
 		y = Random.rand(@height).floor

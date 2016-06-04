@@ -35,6 +35,28 @@ class Pistol < Weapon
 	end
 end
 
+class Shotgun < Weapon
+	class << self
+		def char
+			's'
+		end
+
+		def shoot(x, y, x_dir, y_dir)
+			@bullets << Bullet.new(x, y, x_dir, y_dir)
+			@bullets << Bullet.new(x + y_dir, y + x_dir, x_dir, y_dir)
+			@bullets << Bullet.new(x - y_dir, y - x_dir, x_dir, y_dir)
+		end
+
+		def rate
+			1
+		end
+
+		def damage
+			3
+		end
+	end
+end
+
 class MachineGun < Weapon
 	class << self
 		def char
