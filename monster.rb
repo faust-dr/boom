@@ -50,6 +50,37 @@ class Grunt < Monster
 	end
 end
 
+class Camper < Monster
+	def char
+		'C'
+	end
+
+	def speed
+		0.1
+	end
+
+	def initial_life
+		1.0
+	end
+
+	def move_towards(target)
+		@last = :up unless @last
+
+		directions = {
+			:up => [0, -1, :left],
+			:left => [-1, 0, :down],
+			:down => [0, 1, :right],
+			:right => [1, 0, :up]
+		}
+
+		new_dir = directions[@last]
+		@x += new_dir[0]
+		@y += new_dir[1]
+		@last = new_dir[2]
+	end
+end
+
 MONSTERS = [
-	Grunt
+	Grunt,
+	Camper
 ]
