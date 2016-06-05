@@ -9,7 +9,7 @@ class Weapon
 			self
 		end
 
-		def effect(monster)
+		def effect(monster, bullet)
 			monster.take_damage(damage)
 		end
 	end
@@ -166,23 +166,25 @@ class RocketLauncher < Weapon
 			40
 		end
 
-		def effect(monster)
+		def effect(monster, bullet)
 			monster.take_damage(damage)
 			x = monster.x
 			y = monster.y
+			x_dir = bullet.x_dir
+			y_dir = bullet.y_dir
 
 			return if @bullets.nil?
 
 			(-2..2).each do |i|
 				(-2..2).each do |j|
-					@bullets << Explosion.new(x + i, y + j)
+					@bullets << Explosion.new(x + i, y + j, x_dir, y_dir)
 				end
 			end
 
-			@bullets << Explosion.new(x + 3, y)
-			@bullets << Explosion.new(x - 3, y)
-			@bullets << Explosion.new(x, y + 3)
-			@bullets << Explosion.new(x, y - 3)
+			@bullets << Explosion.new(x + 3, y, x_dir, y_dir)
+			@bullets << Explosion.new(x - 3, y, x_dir, y_dir)
+			@bullets << Explosion.new(x, y + 3, x_dir, y_dir)
+			@bullets << Explosion.new(x, y - 3, x_dir, y_dir)
 		end
 	end
 end

@@ -1,11 +1,12 @@
 class Bullet < Entity
-	attr_accessor :x_dir, :y_dir
+	attr_accessor :x_dir, :y_dir, :frames_until_next_move
 
 	def initialize(x, y, x_dir, y_dir)
 		@x = x
 		@y = y
 		@x_dir = x_dir
 		@y_dir = y_dir
+		@frames_until_next_move = 0
 	end
 
 	def color
@@ -18,5 +19,9 @@ class Bullet < Entity
 
 	def pierce?
 		false
+	end
+
+	def speed
+		1
 	end
 end

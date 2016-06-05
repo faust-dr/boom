@@ -1,11 +1,8 @@
 class Explosion < Bullet
 	attr_accessor :duration
 
-	def initialize(x, y)
-		@x = x
-		@y = y
-		@x_dir = 0
-		@y_dir = 0
+	def initialize(x, y, x_dir, y_dir)
+		super
 		@duration = initial_duration
 	end
 
@@ -18,6 +15,14 @@ class Explosion < Bullet
 	end
 
 	def damage
+		10
+	end
+
+	def pierce?
+		true
+	end
+
+	def speed
 		10
 	end
 end

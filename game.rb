@@ -160,8 +160,13 @@ class Game
 
 	def move_bullets
 		@bullets.each do |bullet|
-			bullet.x = bullet.x + bullet.x_dir
-			bullet.y = bullet.y + bullet.y_dir
+			bullet.frames_until_next_move -= 1
+
+			if bullet.frames_until_next_move <= 0
+				bullet.x = bullet.x + bullet.x_dir
+				bullet.y = bullet.y + bullet.y_dir
+				bullet.frames_until_next_move = bullet.speed
+			end
 		end
 		check_monster_hits
 	end
@@ -182,7 +187,7 @@ class Game
 					if bullet.class == Explosion
 						monster.take_damage(bullet.damage)
 					else
-						@player.weapon.effect(monster)
+						@player.weapon.effect(monster, bullet)
 					end
 
 					if monster.life <= 0
