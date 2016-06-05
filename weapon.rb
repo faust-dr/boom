@@ -163,7 +163,7 @@ class RocketLauncher < Weapon
 		end
 
 		def damage
-			20
+			40
 		end
 
 		def effect(monster)
@@ -173,14 +173,16 @@ class RocketLauncher < Weapon
 
 			return if @bullets.nil?
 
-			(-1..1).each do |i|
-				(-1..1).each do |j|
+			(-2..2).each do |i|
+				(-2..2).each do |j|
 					@bullets << Explosion.new(x + i, y + j)
 				end
 			end
 
-			@bullets << Explosion.new(x + 2, y)
-			@bullets << Explosion.new(x - 2, y)
+			@bullets << Explosion.new(x + 3, y)
+			@bullets << Explosion.new(x - 3, y)
+			@bullets << Explosion.new(x, y + 3)
+			@bullets << Explosion.new(x, y - 3)
 		end
 	end
 end
@@ -196,11 +198,11 @@ class Laser < Weapon
 		end
 
 		def rate
-			1
+			0.3
 		end
 
 		def damage
-			10
+			20
 		end
 	end
 end

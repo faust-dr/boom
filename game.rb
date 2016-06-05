@@ -17,7 +17,7 @@ class Game
 	end
 
 	def monster_number_factor
-		1.3**@level
+		5 + 1.3**@level
 	end
 
 	def spawn_monsters

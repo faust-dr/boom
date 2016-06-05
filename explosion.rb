@@ -18,6 +18,6 @@ class Explosion < Bullet
 	end
 
 	def damage
-		5
+		10
 	end
 end
