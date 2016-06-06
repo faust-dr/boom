@@ -4,21 +4,25 @@ class Monster < Entity
 	def initialize(x, y, level)
 		@x = x
 		@y = y
-		@life = initial_life * 1.1**level
+		@level = level
+		@life = initial_life
 	end
 
 	def color
-		if @life.to_f / initial_life > 0.8
-			Curses::COLOR_GREEN
-		elsif @life.to_f / initial_life > 0.3
-			Curses::COLOR_YELLOW
-		else
-			Curses::COLOR_RED
-		end
+		pos = ((1 - life_fraction) * LIFE.size).round
+		LIFE[pos]
 	end
 
 	def take_damage(damage)
 		@life -= damage
+	end
+
+	def initial_life
+		base_life * 1.1**@level
+	end
+
+	def life_fraction
+		@life.to_f / initial_life
 	end
 end
 	
@@ -31,7 +35,7 @@ class Grunt < Monster
 		0.3
 	end
 
-	def initial_life
+	def base_life
 		2.0
 	end
 
@@ -59,7 +63,7 @@ class Camper < Monster
 		0.1
 	end
 
-	def initial_life
+	def base_life
 		1.0
 	end
 
@@ -89,7 +93,7 @@ class Tank < Monster
 		0.7
 	end
 
-	def initial_life
+	def base_life
 		5.0
 	end
 

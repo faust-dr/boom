@@ -11,3 +11,5 @@ BLUES = (16..40)
 REDS = (196..207)
 YELLOWS = (220..231)
 GREYS = (232..255)
+
+LIFE = [Curses::COLOR_GREEN] + YELLOWS.to_a + REDS.to_a
