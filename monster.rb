@@ -1,11 +1,16 @@
 class Monster < Entity
 	attr_accessor :life
 
-	def initialize(x, y, level)
+	def initialize(x, y, level, player)
 		@x = x
 		@y = y
 		@level = level
 		@life = initial_life
+		@player = player
+	end
+
+	def same_plane_as_player?
+		@x == @player.x || @y == @player.y
 	end
 
 	def color
@@ -24,10 +29,14 @@ class Monster < Entity
 	def life_fraction
 		@life.to_f / initial_life
 	end
+
+	def char
+		same_plane_as_player? ? 'x' : original_char
+	end
 end
 	
 class Grunt < Monster
-	def char
+	def original_char
 		'G'
 	end
 
@@ -55,7 +64,7 @@ class Grunt < Monster
 end
 
 class Camper < Monster
-	def char
+	def original_char
 		'C'
 	end
 
@@ -85,7 +94,7 @@ class Camper < Monster
 end
 
 class Tank < Monster
-	def char
+	def original_char
 		'T'
 	end
 

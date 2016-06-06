@@ -38,7 +38,7 @@ class Game
 			y = Random.rand(@height).floor
 		end
 
-		type.new(x, y, level)
+		type.new(x, y, level, @player)
 	end
 
 	def objects
