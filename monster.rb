@@ -30,8 +30,13 @@ class Monster < Entity
 		@life.to_f / initial_life
 	end
 
+	def shots_left
+		shots_left = (@life.to_f / @player.weapon.damage).ceil
+		(shots_left > 9 ? '+' : shots_left).to_s
+	end
+
 	def char
-		same_plane_as_player? ? 'x' : original_char
+		same_plane_as_player? ? shots_left : original_char
 	end
 end
 	
