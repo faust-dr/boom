@@ -10,7 +10,6 @@ class Game
 		@frame = 1
 		@kill_counter = 0
 		@items = []
-		@last_shot_frames = 0
 		@paused = false
 
 		spawn_monsters
@@ -84,8 +83,8 @@ class Game
 			@frame = 0
 		end
 
-		if @last_shot_frames > 0
-			@last_shot_frames -= 1
+		if @player.last_shot_frames > 0
+			@player.last_shot_frames -= 1
 		end
 	end
 
@@ -94,7 +93,9 @@ class Game
 	end
 
 	def textbox_content
-		"Level: #{@level} | Killed: #{@kill_counter} | Weapon: #{@player.weapon.to_s} | Range : #{@range} | Objects: #{objects.length}"
+		remaining_frames = (@player.last_shot_frames / (@player.weapon.rate * FPS)) * 10
+		remaining_frames = [remaining_frames, 10].min
+		"Level: #{@level} | Killed: #{@kill_counter} | Weapon: #{@player.weapon.to_s} | Objects: #{objects.length} | #{ 'X' * remaining_frames}"
 	end
 
 	def wait?
@@ -122,9 +123,9 @@ class Game
 	end
 
 	def shoot(x_dir, y_dir)
-		return unless @last_shot_frames == 0
+		return unless @player.last_shot_frames == 0
 
-		@last_shot_frames = FPS.to_f * @player.weapon.rate
+		@player.last_shot_frames = FPS.to_f * @player.weapon.rate
 		@player.weapon.with(@bullets).shoot(@player.x, @player.y, x_dir, y_dir)
 	end
 
