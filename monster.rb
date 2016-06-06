@@ -10,7 +10,7 @@ class Monster < Entity
 
 	def color
 		pos = ((1 - life_fraction) * LIFE.size).round
-		LIFE[pos]
+		LIFE[pos] || 88
 	end
 
 	def take_damage(damage)
