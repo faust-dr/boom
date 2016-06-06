@@ -6,3 +6,8 @@
 # Curses::COLOR_MAGENTA = 5
 # Curses::COLOR_CYAN = 6
 # Curses::COLOR_WHITE = 7
+
+BLUES = (16..40)
+REDS = 196..207)
+YELLOWS = (220..231)
+GREYS = (232..255)
