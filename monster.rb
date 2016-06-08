@@ -31,7 +31,7 @@ class Monster < Entity
 	end
 
 	def shots_left
-		shots_left = (@life.to_f / @player.weapon.damage).ceil
+		shots_left = (@life.to_f / @player.damage).ceil
 		(shots_left > 9 ? '+' : shots_left).to_s
 	end
 

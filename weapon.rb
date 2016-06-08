@@ -9,8 +9,8 @@ class Weapon
 			self
 		end
 
-		def effect(monster, bullet)
-			monster.take_damage(damage)
+		def effect(monster, bullet, player)
+			monster.take_damage(damage + player.damage_bonus)
 		end
 	end
 end

@@ -12,6 +12,7 @@ require './explosion.rb'
 require './light.rb'
 require './item.rb'
 require './weapon.rb'
+require './bonus.rb'
 require './game.rb'
 
 Gaminator::Runner.new(Game, :rows => 30, :cols => 80).run
