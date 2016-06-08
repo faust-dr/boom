@@ -166,8 +166,8 @@ class RocketLauncher < Weapon
 			40
 		end
 
-		def effect(monster, bullet)
-			monster.take_damage(damage)
+		def effect(monster, bullet, player)
+			monster.take_damage(damage + player.damage_bonus)
 			x = monster.x
 			y = monster.y
 			x_dir = bullet.x_dir
