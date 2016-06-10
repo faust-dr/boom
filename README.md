@@ -7,6 +7,7 @@ Note: to play, please make sure to edit your keyboard configuration in game.rb u
 
 This is what gameplay looks like:
 
+```
 ┌------------------------------------------------------------------------------┐
 |                                                    G                         |
 |                                      G                          G            |
@@ -37,3 +38,4 @@ This is what gameplay looks like:
 |  Level: 1 | Killed: 0 | Weapon: Pistol | Objects: 8 |                        |
 |                                                                              |
 └------------------------------------------------------------------------------┘
+```
