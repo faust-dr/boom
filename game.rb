@@ -106,7 +106,11 @@ class Game
 		end
 
 		scores.sort{|x,y| y <=> x}.select{|score| score > 0}.first(10).each_with_index.map do |score, i|
-			"#{i+1}. #{score} monsters killed"
+			if @kill_counter == score
+				"#{i+1}. #{score} monsters killed <=="
+			else
+				"#{i+1}. #{score} monsters killed"
+			end
 		end
 	end
 
