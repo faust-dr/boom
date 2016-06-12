@@ -88,8 +88,32 @@ class Game
 		end
 	end
 
+	def highscore
+		filename = 'high.score'
+
+		if File.exists?(filename)
+			scores = File.open(filename, 'r').readlines.map(&:to_i)
+		else
+			scores = []
+		end
+
+		scores << @kill_counter
+
+		File.open(filename, 'w') do |file|
+			scores.each do |score|
+				file.puts score
+			end
+		end
+
+		scores.sort{|x,y| y <=> x}.select{|score| score > 0}.first(10).each_with_index.map do |score, i|
+			"#{i+1}. #{score} monsters killed"
+		end
+	end
+
 	def exit_message
-		'Exiting..'
+		puts 'Highscore'
+		puts
+		puts highscore
 	end
 
 	def textbox_content
