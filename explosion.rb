@@ -23,6 +23,6 @@ class Explosion < Bullet
 	end
 
 	def speed
-		10
+		2	
 	end
 end
