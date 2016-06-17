@@ -196,11 +196,13 @@ class Laser < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@bullets << Light.new(x, y, x_dir, y_dir)
+			(0..80).each do |i|
+				@bullets << Light.new(x + x_dir * i, y + y_dir * i, x_dir, y_dir)
+			end
 		end
 
 		def rate
-			0.3
+			0.2
 		end
 
 		def damage
