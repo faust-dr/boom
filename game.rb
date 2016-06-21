@@ -42,7 +42,7 @@ class Game
 	end
 
 	def objects
-		[@player] + @bullets + @monsters + @items
+		[@player] + @bullets + @items + @monsters
 	end
 
 	def input_map
@@ -123,7 +123,7 @@ class Game
 	def textbox_content
 		remaining_frames = (@player.last_shot_frames / (@player.weapon.rate * FPS)) * 10
 		remaining_frames = [remaining_frames, 10].min
-		"Level: #{@level} | Killed: #{@kill_counter} | Weapon: #{@player.weapon.to_s} | Objects: #{objects.length} | #{ 'X' * remaining_frames}"
+		"Level: #{@level} | Killed: #{@kill_counter} | Weapon: #{@player.weapon.to_s} | Bonus: #{@player.damage_bonus} | Objects: #{objects.length} | #{ 'X' * remaining_frames}"
 	end
 
 	def wait?
