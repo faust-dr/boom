@@ -366,16 +366,19 @@ class RocketChaingun < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@last = 0 unless @last
-			@last = 0 if @last >= 3
+			spray_width = 12
+			offset = 3
 
-			if @last == 0
-				@bullets << Rocket.new(x, y, x_dir, y_dir)
-			elsif @last == 1
-				@bullets << Rocket.new(x + y_dir * 2, y + x_dir * 2, x_dir, y_dir)
+			@last = offset unless @last
+			@last = 0 if @last >= spray_width
+
+			if @last < 6
+				factor = @last - offset
 			else
-				@bullets << Rocket.new(x - y_dir * 2, y - x_dir * 2, x_dir, y_dir)
+				factor = (spray_width - @last - offset)
 			end
+
+			@bullets << Rocket.new(x + y_dir * factor, y + x_dir * factor, x_dir, y_dir)
 
 			@last += 1
 		end
