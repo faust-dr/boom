@@ -42,7 +42,7 @@ class Game
 	end
 
 	def objects
-		[@player] + @bullets + @items + @monsters
+		@bullets + @items + @monsters + [@player]
 	end
 
 	def input_map
