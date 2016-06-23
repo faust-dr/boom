@@ -16,11 +16,11 @@ class Game
 	end
 
 	def monster_number_factor
-		[5 + 1.3**@level, 1000].min
+		[5 + 1.3**@level, 1000].min.to_i
 	end
 
 	def spawn_monsters
-		@monsters = (1..monster_number_factor).map { create_monster(@level) }
+		@monsters = monster_number_factor.times.map { create_monster(@level) }
 	end
 
 	def create_monster(level)
