@@ -12,6 +12,27 @@ class Weapon
 		def effect(monster, bullet, player)
 			monster.take_damage(damage + player.damage_bonus)
 		end
+
+		def shotgun(x, y, x_dir, y_dir)
+			@bullets << projectile.new(x, y, x_dir, y_dir)
+			@bullets << projectile.new(x + y_dir, y + x_dir, x_dir, y_dir)
+			@bullets << projectile.new(x - y_dir, y - x_dir, x_dir, y_dir)
+		end
+
+		def chaingun(x, y, x_dir, y_dir)
+			@last = 0 unless @last
+			@last = 0 if @last >= 3
+
+			if @last == 0
+				@bullets << projectile.new(x, y, x_dir, y_dir)
+			elsif @last == 1
+				@bullets << projectile.new(x + y_dir, y + x_dir, x_dir, y_dir)
+			else
+				@bullets << projectile.new(x - y_dir, y - x_dir, x_dir, y_dir)
+			end
+
+			@last += 1
+		end
 	end
 end
 
@@ -32,6 +53,10 @@ class Pistol < Weapon
 		def damage
 			1
 		end
+
+		def projectile
+			Bullet
+		end
 	end
 end
 
@@ -42,9 +67,7 @@ class Shotgun < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@bullets << Bullet.new(x, y, x_dir, y_dir)
-			@bullets << Bullet.new(x + y_dir, y + x_dir, x_dir, y_dir)
-			@bullets << Bullet.new(x - y_dir, y - x_dir, x_dir, y_dir)
+			shotgun(x, y, x_dir, y_dir)
 		end
 
 		def rate
@@ -53,6 +76,10 @@ class Shotgun < Weapon
 
 		def damage
 			3
+		end
+
+		def projectile
+			Bullet
 		end
 	end
 end
@@ -124,18 +151,7 @@ class ChainGun < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@last = 0 unless @last
-			@last = 0 if @last >= 3
-
-			if @last == 0
-				@bullets << Bullet.new(x, y, x_dir, y_dir)
-			elsif @last == 1
-				@bullets << Bullet.new(x + y_dir, y + x_dir, x_dir, y_dir)
-			else
-				@bullets << Bullet.new(x - y_dir, y - x_dir, x_dir, y_dir)
-			end
-
-			@last += 1
+			chaingun(x, y, x_dir, y_dir)
 		end
 
 		def rate
@@ -144,6 +160,10 @@ class ChainGun < Weapon
 
 		def damage
 			10
+		end
+
+		def projectile
+			Bullet
 		end
 	end
 end
@@ -320,9 +340,7 @@ class RocketShotgun < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@bullets << Rocket.new(x, y, x_dir, y_dir)
-			@bullets << Rocket.new(x + y_dir * 2, y + x_dir * 2, x_dir, y_dir)
-			@bullets << Rocket.new(x - y_dir * 2, y - x_dir * 2, x_dir, y_dir)
+			shotgun(x, y, x_dir, y_dir)
 		end
 
 		def rate
@@ -366,20 +384,7 @@ class RocketChaingun < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@last = 0 unless @last
-			@last = 0 if @last >= 3
-
-			if @last == 0
-				@bullets << Rocket.new(x, y, x_dir, y_dir)
-			elsif @last == 1
-				@bullets << Rocket.new(x + y_dir, y + x_dir, x_dir, y_dir)
-			else
-				@bullets << Rocket.new(x - y_dir, y - x_dir, x_dir, y_dir)
-			end
-			spray_width = 3
-			offset = 1
-
-			@last += 1
+			chaingun(x, y, x_dir, y_dir)
 		end
 
 		def effect(monster, bullet, player)
@@ -396,6 +401,10 @@ class RocketChaingun < Weapon
 					@bullets << Explosion.new(x + i, y + j, x_dir, y_dir)
 				end
 			end
+		end
+
+		def projectile
+			Rocket
 		end
 	end
 end
@@ -456,20 +465,11 @@ class LaserChaingun < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@last = 0 unless @last
-			@last = 0 if @last >= 3
+			chaingun(x, y, x_dir, y_dir)
+		end
 
-			if @last == 0
-				@bullets << Light.new(x, y, x_dir, y_dir)
-			elsif @last == 1
-				@bullets << Light.new(x + y_dir, y + x_dir, x_dir, y_dir)
-			else
-				@bullets << Light.new(x - y_dir, y - x_dir, x_dir, y_dir)
-			end
-			spray_width = 3
-			offset = 1
-
-			@last += 1
+		def projectile
+			Light
 		end
 	end
 end
@@ -481,9 +481,7 @@ class CannonShotgun < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@bullets << Ball.new(x, y, x_dir, y_dir)
-			@bullets << Ball.new(x + y_dir, y + x_dir, x_dir, y_dir)
-			@bullets << Ball.new(x - y_dir, y - x_dir, x_dir, y_dir)
+			shotgun(x, y, x_dir, y_dir)
 		end
 
 		def rate
@@ -492,6 +490,10 @@ class CannonShotgun < Weapon
 
 		def damage
 			150
+		end
+
+		def projectile
+			Ball
 		end
 	end
 end
@@ -511,20 +513,11 @@ class CannonChaingun < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@last = 0 unless @last
-			@last = 0 if @last >= 3
+			chaingun(x, y, x_dir, y_dir)
+		end
 
-			if @last == 0
-				@bullets << Ball.new(x, y, x_dir, y_dir)
-			elsif @last == 1
-				@bullets << Ball.new(x + y_dir, y + x_dir, x_dir, y_dir)
-			else
-				@bullets << Ball.new(x - y_dir, y - x_dir, x_dir, y_dir)
-			end
-			spray_width = 3
-			offset = 1
-
-			@last += 1
+		def projectile
+			Ball
 		end
 	end
 end
