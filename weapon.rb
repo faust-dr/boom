@@ -366,6 +366,10 @@ class RocketShotgun < Weapon
 				end
 			end
 		end
+
+		def projectile
+			Rocket
+		end
 	end
 end
 
