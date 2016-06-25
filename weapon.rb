@@ -362,23 +362,22 @@ class RocketChaingun < Weapon
 		end
 
 		def damage
-			50
+			75
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			spray_width = 12
-			offset = 3
+			@last = 0 unless @last
+			@last = 0 if @last >= 3
 
-			@last = offset unless @last
-			@last = 0 if @last >= spray_width
-
-			if @last < 6
-				factor = @last - offset
+			if @last == 0
+				@bullets << Rocket.new(x, y, x_dir, y_dir)
+			elsif @last == 1
+				@bullets << Rocket.new(x + y_dir, y + x_dir, x_dir, y_dir)
 			else
-				factor = (spray_width - @last - offset)
+				@bullets << Rocket.new(x - y_dir, y - x_dir, x_dir, y_dir)
 			end
-
-			@bullets << Rocket.new(x + y_dir * factor, y + x_dir * factor, x_dir, y_dir)
+			spray_width = 3
+			offset = 1
 
 			@last += 1
 		end
@@ -401,10 +400,10 @@ class RocketChaingun < Weapon
 	end
 end
 
-class TurboLaser < Weapon
+class DoubleLaser < Weapon
 	class << self
 		def char
-			't'
+			'd'
 		end
 
 		def shoot(x, y, x_dir, y_dir)
@@ -422,6 +421,114 @@ class TurboLaser < Weapon
 	end
 end
 
+class Cannon < Weapon
+	class << self
+		def char
+			'c'
+		end
+
+		def shoot(x, y, x_dir, y_dir)
+			@bullets << Ball.new(x, y, x_dir, y_dir)
+		end
+
+		def rate
+			0.5
+		end
+
+		def damage
+			100
+		end
+	end
+end
+
+class LaserChaingun < Weapon
+	class << self
+		def char
+			'L'
+		end
+
+		def rate
+			0.1
+		end
+
+		def damage
+			75
+		end
+
+		def shoot(x, y, x_dir, y_dir)
+			@last = 0 unless @last
+			@last = 0 if @last >= 3
+
+			if @last == 0
+				@bullets << Light.new(x, y, x_dir, y_dir)
+			elsif @last == 1
+				@bullets << Light.new(x + y_dir, y + x_dir, x_dir, y_dir)
+			else
+				@bullets << Light.new(x - y_dir, y - x_dir, x_dir, y_dir)
+			end
+			spray_width = 3
+			offset = 1
+
+			@last += 1
+		end
+	end
+end
+
+class CannonShotgun < Weapon
+	class << self
+		def char
+			'C'
+		end
+
+		def shoot(x, y, x_dir, y_dir)
+			@bullets << Ball.new(x, y, x_dir, y_dir)
+			@bullets << Ball.new(x + y_dir, y + x_dir, x_dir, y_dir)
+			@bullets << Ball.new(x - y_dir, y - x_dir, x_dir, y_dir)
+		end
+
+		def rate
+			0.7
+		end
+
+		def damage
+			150
+		end
+	end
+end
+
+class CannonChaingun < Weapon
+	class << self
+		def char
+			'C'
+		end
+
+		def rate
+			0.1
+		end
+
+		def damage
+			150
+		end
+
+		def shoot(x, y, x_dir, y_dir)
+			@last = 0 unless @last
+			@last = 0 if @last >= 3
+
+			if @last == 0
+				@bullets << Ball.new(x, y, x_dir, y_dir)
+			elsif @last == 1
+				@bullets << Ball.new(x + y_dir, y + x_dir, x_dir, y_dir)
+			else
+				@bullets << Ball.new(x - y_dir, y - x_dir, x_dir, y_dir)
+			end
+			spray_width = 3
+			offset = 1
+
+			@last += 1
+		end
+	end
+end
+
 WEAPONS = [
 	Pistol,
 	Shotgun,
@@ -431,9 +538,13 @@ WEAPONS = [
 	RocketLauncher,
 	Laser,
 	QuadShotgun,
-	RocketMachinegun,
-	LaserShotgun,
 	RocketShotgun,
-	TurboLaser,
-	RocketChaingun
+	LaserShotgun,
+	Cannon,
+	RocketMachinegun,
+	DoubleLaser,
+	CannonShotgun,
+	RocketChaingun,
+	LaserChaingun,
+	CannonChaingun
 ]
