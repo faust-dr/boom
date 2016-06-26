@@ -1,7 +1,7 @@
 class Explosion < Bullet
 	attr_accessor :duration
 
-	def initialize(x, y, x_dir, y_dir)
+	def initialize(weapon, x, y, x_dir, y_dir)
 		super
 		@duration = initial_duration
 	end

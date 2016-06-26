@@ -13,10 +13,14 @@ class Weapon
 			monster.take_damage(damage + player.damage_bonus)
 		end
 
+		def single(x, y, x_dir, y_dir)
+			@bullets << projectile.new(self, x, y, x_dir, y_dir)
+		end
+
 		def shotgun(x, y, x_dir, y_dir)
-			@bullets << projectile.new(x, y, x_dir, y_dir)
-			@bullets << projectile.new(x + y_dir, y + x_dir, x_dir, y_dir)
-			@bullets << projectile.new(x - y_dir, y - x_dir, x_dir, y_dir)
+			@bullets << projectile.new(self, x, y, x_dir, y_dir)
+			@bullets << projectile.new(self, x + y_dir, y + x_dir, x_dir, y_dir)
+			@bullets << projectile.new(self, x - y_dir, y - x_dir, x_dir, y_dir)
 		end
 
 		def chaingun(x, y, x_dir, y_dir)
@@ -24,14 +28,30 @@ class Weapon
 			@last = 0 if @last >= 3
 
 			if @last == 0
-				@bullets << projectile.new(x, y, x_dir, y_dir)
+				@bullets << projectile.new(self, x, y, x_dir, y_dir)
 			elsif @last == 1
-				@bullets << projectile.new(x + y_dir, y + x_dir, x_dir, y_dir)
+				@bullets << projectile.new(self, x + y_dir, y + x_dir, x_dir, y_dir)
 			else
-				@bullets << projectile.new(x - y_dir, y - x_dir, x_dir, y_dir)
+				@bullets << projectile.new(self, x - y_dir, y - x_dir, x_dir, y_dir)
 			end
 
 			@last += 1
+		end
+
+		def explosion(monster, bullet, player)
+			monster.take_damage(damage + player.damage_bonus)
+			x = monster.x
+			y = monster.y
+			x_dir = bullet.x_dir
+			y_dir = bullet.y_dir
+
+			return if @bullets.nil?
+
+			(-1..1).each do |i|
+				(-1..1).each do |j|
+					@bullets << Explosion.new(self, x + i, y + j, x_dir, y_dir)
+				end
+			end
 		end
 	end
 end
@@ -43,7 +63,7 @@ class Pistol < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@bullets << Bullet.new(x, y, x_dir, y_dir)
+			single(x, y, x_dir, y_dir)
 		end
 
 		def rate
@@ -91,7 +111,7 @@ class MachineGun < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@bullets << Bullet.new(x, y, x_dir, y_dir)
+			single(x, y, x_dir, y_dir)
 		end
 
 		def rate
@@ -100,6 +120,10 @@ class MachineGun < Weapon
 
 		def damage
 			1
+		end
+
+		def projectile
+			Bullet
 		end
 	end
 end
@@ -121,9 +145,9 @@ class AutoShotgun < Weapon
 				@shots_left = magazine_size
 			end
 
-			@bullets << Bullet.new(x, y, x_dir, y_dir)
-			@bullets << Bullet.new(x + y_dir, y + x_dir, x_dir, y_dir)
-			@bullets << Bullet.new(x - y_dir, y - x_dir, x_dir, y_dir)
+			@bullets << Bullet.new(self, x, y, x_dir, y_dir)
+			@bullets << Bullet.new(self, x + y_dir, y + x_dir, x_dir, y_dir)
+			@bullets << Bullet.new(self, x - y_dir, y - x_dir, x_dir, y_dir)
 
 			@shots_left -= 1
 		end
@@ -175,7 +199,7 @@ class RocketLauncher < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@bullets << Rocket.new(x, y, x_dir, y_dir)
+			single(x, y, x_dir, y_dir)
 		end
 
 		def rate
@@ -197,14 +221,18 @@ class RocketLauncher < Weapon
 
 			(-2..2).each do |i|
 				(-2..2).each do |j|
-					@bullets << Explosion.new(x + i, y + j, x_dir, y_dir)
+					@bullets << Explosion.new(self, x + i, y + j, x_dir, y_dir)
 				end
 			end
 
-			@bullets << Explosion.new(x + 3, y, x_dir, y_dir)
-			@bullets << Explosion.new(x - 3, y, x_dir, y_dir)
-			@bullets << Explosion.new(x, y + 3, x_dir, y_dir)
-			@bullets << Explosion.new(x, y - 3, x_dir, y_dir)
+			@bullets << Explosion.new(self, x + 3, y, x_dir, y_dir)
+			@bullets << Explosion.new(self, x - 3, y, x_dir, y_dir)
+			@bullets << Explosion.new(self, x, y + 3, x_dir, y_dir)
+			@bullets << Explosion.new(self, x, y - 3, x_dir, y_dir)
+		end
+
+		def projectile
+			Rocket
 		end
 	end
 end
@@ -217,7 +245,7 @@ class Laser < Weapon
 
 		def shoot(x, y, x_dir, y_dir)
 			(0..80).each do |i|
-				@bullets << Light.new(x + x_dir * i, y + y_dir * i, x_dir, y_dir)
+				single(x + x_dir * i, y + y_dir * i, x_dir, y_dir)
 			end
 		end
 
@@ -227,6 +255,10 @@ class Laser < Weapon
 
 		def damage
 			20
+		end
+
+		def projectile
+			Light
 		end
 	end
 end
@@ -248,11 +280,11 @@ class QuadShotgun < Weapon
 				@shots_left = magazine_size
 			end
 
-			@bullets << Bullet.new(x, y, x_dir, y_dir)
-			@bullets << Bullet.new(x + y_dir, y + x_dir, x_dir, y_dir)
-			@bullets << Bullet.new(x + 2 * y_dir, y + 2 * x_dir, x_dir, y_dir)
-			@bullets << Bullet.new(x - y_dir, y - x_dir, x_dir, y_dir)
-			@bullets << Bullet.new(x - 2 * y_dir, y - 2 * x_dir, x_dir, y_dir)
+			@bullets << Bullet.new(self, x, y, x_dir, y_dir)
+			@bullets << Bullet.new(self, x + y_dir, y + x_dir, x_dir, y_dir)
+			@bullets << Bullet.new(self, x + 2 * y_dir, y + 2 * x_dir, x_dir, y_dir)
+			@bullets << Bullet.new(self, x - y_dir, y - x_dir, x_dir, y_dir)
+			@bullets << Bullet.new(self, x - 2 * y_dir, y - 2 * x_dir, x_dir, y_dir)
 
 			@shots_left -= 1
 		end
@@ -280,7 +312,7 @@ class RocketMachinegun < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@bullets << Rocket.new(x, y, x_dir, y_dir)
+			single(x, y, x_dir, y_dir)
 		end
 
 		def rate
@@ -292,19 +324,11 @@ class RocketMachinegun < Weapon
 		end
 
 		def effect(monster, bullet, player)
-			monster.take_damage(damage + player.damage_bonus)
-			x = monster.x
-			y = monster.y
-			x_dir = bullet.x_dir
-			y_dir = bullet.y_dir
+			explosion(monster, bullet, player)
+		end
 
-			return if @bullets.nil?
-
-			(-1..1).each do |i|
-				(-1..1).each do |j|
-					@bullets << Explosion.new(x + i, y + j, x_dir, y_dir)
-				end
-			end
+		def projectile
+			Rocket
 		end
 	end
 end
@@ -317,9 +341,9 @@ class LaserShotgun < Weapon
 
 		def shoot(x, y, x_dir, y_dir)
 			(0..80).each do |i|
-				@bullets << Light.new(x + x_dir * i, y + y_dir * i, x_dir, y_dir)
-				@bullets << Light.new(x + x_dir * i + y_dir, y + y_dir * i + x_dir, x_dir, y_dir)
-				@bullets << Light.new(x + x_dir * i - y_dir, y + y_dir * i - x_dir, x_dir, y_dir)
+				@bullets << Light.new(self, x + x_dir * i, y + y_dir * i, x_dir, y_dir)
+				@bullets << Light.new(self, x + x_dir * i + y_dir, y + y_dir * i + x_dir, x_dir, y_dir)
+				@bullets << Light.new(self, x + x_dir * i - y_dir, y + y_dir * i - x_dir, x_dir, y_dir)
 			end
 		end
 
@@ -352,19 +376,7 @@ class RocketShotgun < Weapon
 		end
 
 		def effect(monster, bullet, player)
-			monster.take_damage(damage + player.damage_bonus)
-			x = monster.x
-			y = monster.y
-			x_dir = bullet.x_dir
-			y_dir = bullet.y_dir
-
-			return if @bullets.nil?
-
-			(-1..1).each do |i|
-				(-1..1).each do |j|
-					@bullets << Explosion.new(x + i, y + j, x_dir, y_dir)
-				end
-			end
+			explosion(monster, bullet, player)
 		end
 
 		def projectile
@@ -392,19 +404,7 @@ class RocketChaingun < Weapon
 		end
 
 		def effect(monster, bullet, player)
-			monster.take_damage(damage + player.damage_bonus)
-			x = monster.x
-			y = monster.y
-			x_dir = bullet.x_dir
-			y_dir = bullet.y_dir
-
-			return if @bullets.nil?
-
-			(-1..1).each do |i|
-				(-1..1).each do |j|
-					@bullets << Explosion.new(x + i, y + j, x_dir, y_dir)
-				end
-			end
+			explosion(monster, bullet, player)
 		end
 
 		def projectile
@@ -420,8 +420,8 @@ class DoubleLaser < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@bullets << Light.new(x, y, x_dir, y_dir)
-			@bullets << Light.new(x, y, -x_dir, -y_dir)
+			@bullets << Light.new(self, x, y, x_dir, y_dir)
+			@bullets << Light.new(self, x, y, -x_dir, -y_dir)
 		end
 
 		def rate
@@ -441,7 +441,7 @@ class Cannon < Weapon
 		end
 
 		def shoot(x, y, x_dir, y_dir)
-			@bullets << Ball.new(x, y, x_dir, y_dir)
+			single(x, y, x_dir, y_dir)
 		end
 
 		def rate
@@ -450,6 +450,10 @@ class Cannon < Weapon
 
 		def damage
 			100
+		end
+
+		def projectile
+			Ball
 		end
 	end
 end
@@ -526,6 +530,70 @@ class CannonChaingun < Weapon
 	end
 end
 
+class ArrowGun < Weapon
+	class << self
+		def char
+			'a'
+		end
+
+		def rate
+			1
+		end
+
+		def damage
+			150
+		end
+
+		def shoot(x, y, x_dir, y_dir)
+			single(x, y, x_dir, y_dir)
+		end
+
+		def projectile
+			Arrow
+		end
+
+		def effect(monster, bullet, player)
+			explosion(monster, bullet, player)
+		end
+	end
+end
+
+class LaserArrowGun < ArrowGun
+	class << self
+		def char
+			'A'
+		end
+
+		def projectile
+			LightArrow
+		end
+	end
+end
+
+class BallArrowGun < ArrowGun
+	class << self
+		def char
+			'B'
+		end
+
+		def projectile
+			BallArrow
+		end
+	end
+end
+
+class RocketArrowGun < ArrowGun
+	class << self
+		def char
+			'R'
+		end
+
+		def projectile
+			RocketArrow.with(@bullets)
+		end
+	end
+end
+
 WEAPONS = [
 	Pistol,
 	Shotgun,
@@ -533,15 +601,19 @@ WEAPONS = [
 	AutoShotgun,
 	ChainGun,
 	RocketLauncher,
+	ArrowGun,
 	Laser,
 	QuadShotgun,
+	Cannon,
+	LaserArrowGun,
 	RocketShotgun,
 	LaserShotgun,
-	Cannon,
+	BallArrowGun,
 	RocketMachinegun,
 	DoubleLaser,
 	CannonShotgun,
 	RocketChaingun,
 	LaserChaingun,
-	CannonChaingun
+	CannonChaingun,
+	RocketArrowGun
 ]

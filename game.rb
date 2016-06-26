@@ -194,7 +194,10 @@ class Game
 				bullet.y = bullet.y + bullet.y_dir
 				bullet.frames_until_next_move = bullet.speed
 			end
+
+			bullet.on_move(@bullets)
 		end
+
 		check_monster_hits
 	end
 
@@ -214,7 +217,7 @@ class Game
 					if bullet.class == Explosion
 						monster.take_damage(bullet.damage)
 					else
-						@player.weapon.effect(monster, bullet, @player)
+						bullet.weapon.effect(monster, bullet, @player)
 					end
 
 					if monster.life <= 0

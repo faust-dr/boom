@@ -1,7 +1,8 @@
 class Bullet < Entity
-	attr_accessor :x_dir, :y_dir, :frames_until_next_move
+	attr_accessor :x_dir, :y_dir, :frames_until_next_move, :weapon
 
-	def initialize(x, y, x_dir, y_dir)
+	def initialize(weapon, x, y, x_dir, y_dir)
+		@weapon = weapon
 		@x = x
 		@y = y
 		@x_dir = x_dir
@@ -23,5 +24,8 @@ class Bullet < Entity
 
 	def speed
 		1
+	end
+
+	def on_move(bullets)
 	end
 end
