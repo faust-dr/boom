@@ -25,6 +25,10 @@ class Arrow < Bullet
 	def effect(monster, bullet, player)
 		Pistol.effect(monster, bullet, player)
 	end
+
+	def damage
+		50
+	end
 end
 
 class LightArrow < Arrow

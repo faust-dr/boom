@@ -537,7 +537,7 @@ class ArrowGun < Weapon
 		end
 
 		def rate
-			1
+			0.8
 		end
 
 		def damage

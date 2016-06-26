@@ -13,6 +13,6 @@ class Bonus < Item
 	end
 
 	def effect(player)
-		player.damage_bonus += 1
+		player.damage_bonus += 2
 	end
 end
