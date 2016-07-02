@@ -372,7 +372,7 @@ class RocketShotgun < Weapon
 		end
 
 		def damage
-			50
+			75
 		end
 
 		def effect(monster, bullet, player)
@@ -429,7 +429,27 @@ class DoubleLaser < Weapon
 		end
 
 		def damage
-			30
+			45
+		end
+	end
+end
+
+class TurboLaser < DoubleLaser
+	class << self
+		def char
+			'T'
+		end
+
+		def shoot(x, y, x_dir, y_dir)
+			@bullets << Light.new(self, x, y, x_dir, y_dir)
+			@bullets << Light.new(self, x, y, -x_dir, -y_dir)
+
+			@bullets << Light.new(self, x, y, y_dir, x_dir)
+			@bullets << Light.new(self, x, y, -y_dir, -x_dir)
+		end
+
+		def damage
+			100
 		end
 	end
 end
@@ -445,11 +465,11 @@ class Cannon < Weapon
 		end
 
 		def rate
-			0.5
+			0.4
 		end
 
 		def damage
-			100
+			120
 		end
 
 		def projectile
@@ -493,11 +513,11 @@ class CannonShotgun < Weapon
 		end
 
 		def rate
-			0.7
+			0.5
 		end
 
 		def damage
-			150
+			250
 		end
 
 		def projectile
@@ -564,6 +584,10 @@ class LaserArrowGun < ArrowGun
 			'A'
 		end
 
+		def rate
+			0.5
+		end
+
 		def projectile
 			LightArrow
 		end
@@ -615,5 +639,6 @@ WEAPONS = [
 	RocketChaingun,
 	LaserChaingun,
 	CannonChaingun,
-	RocketArrowGun
+	RocketArrowGun,
+	TurboLaser
 ]
