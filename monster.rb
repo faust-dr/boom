@@ -126,8 +126,28 @@ class Tank < Monster
 	end
 end
 
+class Rando < Monster
+	def original_char
+		'R'
+	end
+
+	def speed
+		0.7
+	end
+
+	def base_life
+		1.0
+	end
+
+	def move_towards(target)
+		@x += Random.rand(3) - 1
+		@y += Random.rand(3) - 1
+	end
+end
+
 MONSTERS = [
 	Grunt,
 	Camper,
-	Tank
+	Tank,
+	Rando
 ]

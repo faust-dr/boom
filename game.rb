@@ -70,6 +70,7 @@ class Game
 		increment_frame
 		move_bullets
 		move_monsters
+		remove_out_of_bounds_monsters
 		check_monster_hits
 		remove_boundary_bullets
 		check_player_hits
@@ -181,6 +182,14 @@ class Game
 		@monsters.each do |monster|
 			if @frame % (monster.speed * FPS.to_f) == 0
 				monster.move_towards(@player)
+			end
+		end
+	end
+
+	def remove_out_of_bounds_monsters
+		@monsters.each do |monster|
+			if monster.x < 0 || monster.x >= @width || monster.y < 0 || monster.y >= @height
+				@monsters.delete(monster)
 			end
 		end
 	end
