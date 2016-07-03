@@ -13,7 +13,7 @@ class Arrow < Bullet
 		end
 	end
 
-	def on_move(bullets)
+	def on_move(bullets, _, _)
 		bullets << projectile.new(self, @x - @x_dir, @y - @y_dir, @y_dir, @x_dir)
 		bullets << projectile.new(self, @x - @x_dir, @y - @y_dir, -@y_dir, -@x_dir)
 	end

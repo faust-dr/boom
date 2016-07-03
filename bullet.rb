@@ -26,6 +26,6 @@ class Bullet < Entity
 		1
 	end
 
-	def on_move(bullets)
+	def on_move(bullets, _, _)
 	end
 end
