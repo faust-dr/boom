@@ -396,7 +396,7 @@ class RocketChaingun < Weapon
 		end
 
 		def damage
-			75
+			750
 		end
 
 		def shoot(x, y, x_dir, y_dir)
@@ -449,7 +449,7 @@ class TurboLaser < DoubleLaser
 		end
 
 		def damage
-			100
+			2000
 		end
 	end
 end
@@ -489,7 +489,7 @@ class LaserChaingun < Weapon
 		end
 
 		def damage
-			75
+			1000
 		end
 
 		def shoot(x, y, x_dir, y_dir)
@@ -537,7 +537,7 @@ class CannonChaingun < Weapon
 		end
 
 		def damage
-			150
+			1000
 		end
 
 		def shoot(x, y, x_dir, y_dir)
@@ -612,6 +612,10 @@ class RocketArrowGun < ArrowGun
 			'R'
 		end
 
+		def damage
+			1000
+		end
+
 		def projectile
 			RocketArrow.with(@bullets)
 		end
@@ -639,6 +643,6 @@ WEAPONS = [
 	RocketChaingun,
 	LaserChaingun,
 	CannonChaingun,
-	RocketArrowGun,
+	# RocketArrowGun,
 	TurboLaser
 ]

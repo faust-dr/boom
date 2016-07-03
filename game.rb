@@ -4,9 +4,9 @@ class Game
 	def initialize(width, height)
 		@width = width
 		@height = height
-		@player = Player.new(width/2, height/2)
 		@bullets = []
 		@level = 1
+		@player = Player.new(width/2, height/2, @level)
 		@frame = 1
 		@kill_counter = 0
 		@items = []
