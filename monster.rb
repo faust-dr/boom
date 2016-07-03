@@ -145,9 +145,27 @@ class Rando < Monster
 	end
 end
 
+class Stone < Monster
+	def original_char
+		'S'
+	end
+
+	def speed
+		1
+	end
+
+	def base_life
+		10
+	end
+
+	def move_towards(target)
+	end
+end
+
 MONSTERS = [
 	Grunt,
 	Camper,
 	Tank,
-	Rando
+	Rando,
+	Stone
 ]
