@@ -82,6 +82,8 @@ class Camper < Monster
 	end
 
 	def move_towards(target)
+		step_length = 3
+		@step_count = step_length unless @step_count
 		@last = :up unless @last
 
 		directions = {
@@ -91,10 +93,17 @@ class Camper < Monster
 			:right => [1, 0, :up]
 		}
 
-		new_dir = directions[@last]
-		@x += new_dir[0]
-		@y += new_dir[1]
-		@last = new_dir[2]
+		if @step_count == 0
+			new_dir = directions[@last]
+			@x += new_dir[0]
+			@y += new_dir[1]
+			@last = new_dir[2]
+			@step_count = step_length
+		else
+			@x += directions[@last][0]
+			@y += directions[@last][1]
+			@step_count -= 1
+		end
 	end
 end
 
