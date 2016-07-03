@@ -209,7 +209,7 @@ class Game
 				bullet.frames_until_next_move = bullet.speed
 			end
 
-			bullet.on_move(@bullets)
+			bullet.on_move(@bullets, @width, @height)
 		end
 
 		check_monster_hits
