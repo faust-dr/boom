@@ -17,5 +17,5 @@ require './weapon.rb'
 require './bonus.rb'
 require './game.rb'
 
-level = ARGV.first.to_i
+level = (ARGV.first || 1).to_i
 Gaminator::Runner.new(Game.level(level), :rows => 30, :cols => 80).run

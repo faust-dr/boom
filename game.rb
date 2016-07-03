@@ -10,7 +10,7 @@ class Game
 		@width = width
 		@height = height
 		@bullets = []
-		@level = @@level || 1
+		@level = @@level
 		@player = Player.new(width/2, height/2, @level)
 		@frame = 1
 		@kill_counter = 0
