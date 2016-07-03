@@ -4,7 +4,7 @@ class Player < Entity
 	def initialize(x, y, level)
 		@x = x
 		@y = y
-		@weapon = WEAPONS[[level/4, WEAPONS.length].min]
+		@weapon = WEAPONS[[level/4, WEAPONS.length - 1].min]
 		@last_shot_frames = 0
 		@damage_bonus = (level+2)/4
 	end
