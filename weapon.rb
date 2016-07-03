@@ -396,7 +396,7 @@ class RocketChaingun < Weapon
 		end
 
 		def damage
-			750
+			1000
 		end
 
 		def shoot(x, y, x_dir, y_dir)
@@ -622,6 +622,30 @@ class RocketArrowGun < ArrowGun
 	end
 end
 
+class RandomGun < MachineGun
+	class << self
+		def char
+			'?'
+		end
+
+		def rate
+			Random.rand(1)
+		end
+
+		def damage
+			Random.rand(10000)
+		end
+
+		def projectile
+			[Ball, Bullet, Light, Rocket].sample
+		end
+
+		def shoot(x, y, x_dir, y_dir)
+			send([:single, :shotgun, :chaingun].sample, x, y, x_dir, y_dir)
+		end
+	end
+end
+
 WEAPONS = [
 	Pistol,
 	Shotgun,
@@ -644,5 +668,6 @@ WEAPONS = [
 	LaserChaingun,
 	CannonChaingun,
 	# RocketArrowGun,
-	TurboLaser
+	TurboLaser,
+	RandomGun
 ]
