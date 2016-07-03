@@ -1,11 +1,16 @@
 FPS = 30
 
 class Game
+	def self.level(level)
+		@@level = level
+		self
+	end
+
 	def initialize(width, height)
 		@width = width
 		@height = height
 		@bullets = []
-		@level = 1
+		@level = @@level || 1
 		@player = Player.new(width/2, height/2, @level)
 		@frame = 1
 		@kill_counter = 0
