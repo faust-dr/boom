@@ -169,7 +169,7 @@ class Stone < Monster
 	end
 
 	def base_life
-		10
+		5
 	end
 
 	def move_towards(target)
