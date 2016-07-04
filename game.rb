@@ -52,20 +52,7 @@ class Game
 	end
 
 	def input_map
-		{
-			?a => :move_left,
-			?t => :move_right,
-			?f => :move_up,
-			?s => :move_down,
-
-			?n => :shoot_left,
-			?i => :shoot_right,
-			?u => :shoot_up,
-			?e => :shoot_down,
-
-			?q => :exit,
-			' '=> :pause,
-		}
+		KEYBOARD_CONFIG
 	end
 
 	def pause

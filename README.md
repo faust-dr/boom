@@ -3,7 +3,7 @@ Boom
 
 A 2D action game you can play in the console.
 
-Note: to play, please make sure to edit your keyboard configuration in game.rb under `input_map`.
+Note: to play, please make sure to edit your keyboard configuration in config.rb
 
 This is what gameplay looks like:
 

@@ -15,6 +15,7 @@ require './arrow.rb'
 require './item.rb'
 require './weapon.rb'
 require './bonus.rb'
+require './config.rb'
 require './game.rb'
 
 level = (ARGV.first || 1).to_i
