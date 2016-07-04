@@ -659,15 +659,15 @@ WEAPONS = [
 	Cannon,
 	RocketShotgun,
 	LaserShotgun,
-	LaserArrowGun,
 	RocketMachinegun,
 	DoubleLaser,
 	CannonShotgun,
-	BallArrowGun,
+	LaserArrowGun,
 	RocketChaingun,
 	LaserChaingun,
 	CannonChaingun,
 	# RocketArrowGun,
 	TurboLaser,
+	BallArrowGun,
 	RandomGun
 ]
