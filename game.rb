@@ -16,6 +16,7 @@ class Game
 		@kill_counter = 0
 		@items = []
 		@paused = false
+		@shoot_direction = [-1, 0]
 
 		spawn_monsters
 	end
@@ -72,6 +73,7 @@ class Game
 	end
 
 	def tick
+		shoot
 		increment_frame
 		move_bullets
 		move_monsters
@@ -154,27 +156,30 @@ class Game
 		@player.y = @player.y + 1 unless @player.y == (@height - 1)
 	end
 
-	def shoot(x_dir, y_dir)
+	def shoot
 		return unless @player.last_shot_frames == 0
+
+		x_dir = @shoot_direction[0]
+		y_dir = @shoot_direction[1]
 
 		@player.last_shot_frames = FPS.to_f * @player.weapon.rate
 		@player.weapon.with(@bullets).shoot(@player.x, @player.y, x_dir, y_dir)
 	end
 
 	def shoot_left
-		shoot(-1, 0)
+		@shoot_direction = [-1, 0]
 	end
 
 	def shoot_right
-		shoot(1, 0)
+		@shoot_direction = [1, 0]
 	end
 
 	def shoot_up
-		shoot(0, -1)
+		@shoot_direction = [0, -1]
 	end
 
 	def shoot_down
-		shoot(0, 1)
+		@shoot_direction = [0, 1]
 	end
 
 	def exit
