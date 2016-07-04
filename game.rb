@@ -193,7 +193,7 @@ class Game
 
 	def remove_out_of_bounds_monsters
 		@monsters.each do |monster|
-			if monster.x < 0 || monster.x >= @width-1 || monster.y < 0 || monster.y >= @height-1
+			if monster.x < 0 || monster.x >= @width || monster.y < 0 || monster.y >= @height
 				@monsters.delete(monster)
 			end
 		end
