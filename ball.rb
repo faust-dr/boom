@@ -4,7 +4,7 @@ class Ball < Bullet
 	def initialize(weapon, x, y, x_dir, y_dir)
 		super
 
-		@bounces_left = 3
+		@bounces_left = 1
 	end
 
 	def char
