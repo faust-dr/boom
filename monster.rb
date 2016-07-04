@@ -69,6 +69,12 @@ class Grunt < Monster
 end
 
 class Camper < Monster
+	def initialize(x, y, level, player)
+		super
+
+		@step_length = Random.rand(5)
+	end
+
 	def original_char
 		'C'
 	end
@@ -82,8 +88,7 @@ class Camper < Monster
 	end
 
 	def move_towards(target)
-		step_length = 3
-		@step_count = step_length unless @step_count
+		@step_count = @step_length unless @step_count
 		@last = :up unless @last
 
 		directions = {
@@ -98,7 +103,7 @@ class Camper < Monster
 			@x += new_dir[0]
 			@y += new_dir[1]
 			@last = new_dir[2]
-			@step_count = step_length
+			@step_count = @step_length
 		else
 			@x += directions[@last][0]
 			@y += directions[@last][1]
