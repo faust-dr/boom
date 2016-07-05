@@ -9,6 +9,6 @@ KEYBOARD_CONFIG = {
 	?u => :shoot_up,
 	?e => :shoot_down,
 
-	?q => :exit,
+	?0 => :exit,
 	' '=> :pause,
 }
