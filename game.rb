@@ -110,6 +110,8 @@ class Game
 	end
 
 	def exit_message
+		puts "You made it to level #{@level}"
+		puts
 		puts 'Highscore'
 		puts
 		puts highscore
