@@ -10,7 +10,7 @@ class Weapon
 		end
 
 		def effect(monster, bullet, player)
-			monster.take_damage(damage + player.damage_bonus)
+			monster.take_damage(effective_damage(damage, player))
 		end
 
 		def single(x, y, x_dir, y_dir)
@@ -39,7 +39,7 @@ class Weapon
 		end
 
 		def explosion(monster, bullet, player)
-			monster.take_damage(damage + player.damage_bonus)
+			monster.take_damage(effective_damage(damage, player))
 			x = monster.x
 			y = monster.y
 			x_dir = bullet.x_dir
@@ -52,6 +52,12 @@ class Weapon
 					@bullets << Explosion.new(self, x + i, y + j, x_dir, y_dir)
 				end
 			end
+		end
+
+		private
+
+		def effective_damage(damage, player)
+			damage * (1 + (player.damage_bonus/10)) + player.damage_bonus
 		end
 	end
 end
